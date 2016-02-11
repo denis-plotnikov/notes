@@ -1,0 +1,26 @@
+Turn on QEMU tracing on VZ7 (https://jira.sw.ru/browse/PSBM-41966)
+--------------------------------------------------------------------
+1. Turn on events
+	virsh qemu-monitor-command --hmp <vm_name> log trace:*
+
+2. Get status of event being traced
+	virsh qemu-monitor-command --hmp <vm_name> info trace-events
+
+3. Content of tracing could be found here
+	/var/log/libvirt/qemu/<vm_name>.log
+
+NOT SURE that the following is valid for VZ7 qemu-kvm - valid for trace-backend=simple
+More details here: http://repo.or.cz/w/qemu/stefanha.git/blob_plain/refs/heads/tracing:/docs/tracing.txt
+4. Set the list of events being traced
+	a. virsh edit <vm_name>
+	b. put -trace on one line and events=<path_to_events_file> to anothe line
+		example of events file could be found here: /usr/share/qemu-kvm/trace-events
+	Example of how it should look like:
+		<qemu:commandline>
+			<qemu:arg value='-d'/>
+			<qemu:arg value='guest_errors,unimp,cpu_reset'/>
+			<qemu:arg value='-trace'/>
+			<qemu:arg value='events=/usr/share/qemu-kvm/trace-events'/>
+		</qemu:commandline>
+
+
