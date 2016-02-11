@@ -1,0 +1,13 @@
+Trace events using perf
+---------------------------------------------
+1. List all the events avaliable
+	perf list
+2. Record all KVM events
+	perf record -p <pid> -e "kvm:*" sleep <seconds>
+3. Show processed report
+	perf report
+4. Show raw report
+	perf script
+5. Dump report to a file
+	perf report > <file_name>
+
