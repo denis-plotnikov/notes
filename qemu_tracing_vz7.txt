@@ -6,7 +6,11 @@ Turn on QEMU tracing on VZ7 (https://jira.sw.ru/browse/PSBM-41966)
 2. Get status of event being traced
 	virsh qemu-monitor-command --hmp <vm_name> info trace-events
 
-3. Content of tracing could be found here
+3. Turn on/off events
+	for a specific event: virsh qemu-monitor-command --hmp <vm_name> trace-event <event_name> on(off)
+	for all the events:   virsh qemu-monitor-command --hmp <vm_name> trace-event \* on(off)
+
+4. Content of the tracing could be found here
 	/var/log/libvirt/qemu/<vm_name>.log
 
 NOT SURE that the following is valid for VZ7 qemu-kvm - valid for trace-backend=simple
