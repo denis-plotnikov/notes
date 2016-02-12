@@ -1,0 +1,22 @@
+How to install?
+--------------------------------------------
+cd /home && curl -o latest -L https://securedownloads.cpanel.net/latest && sh latest
+
+What does a user typically do while using cPanel?
+--------------------------------------------
+1. Create a data base
+	- create a db
+	- generate db password
+	- create db user and add it to the db
+2. Use PHPmyAdmin to manage created db-s
+3. Add domains and subdomains
+
+What is WHM?
+http://ktonanovenkogo.ru/vokrug-da-okolo/hosting/upravleniya-xostingom-cpanel-raboty-bazami-dannyx-sozdanie-udalenie-baz-dannyx-polzovatelej-phpmyadmin.html
+************************* QUESTIONS *************************
+1. In the description is said that a user use PHPmyAdmin more frequently than cPanel. 
+-----> How about testing PHPmyAdmin
+The description:
+http://ktonanovenkogo.ru/vokrug-da-okolo/hosting/upravleniya-xostingom-cpanel-raboty-bazami-dannyx-sozdanie-udalenie-baz-dannyx-polzovatelej-phpmyadmin.html 
+
+
