@@ -1,0 +1,11 @@
+1. make tags
+2. vim -t <some_name>
+3. crtl+Ъ -> jump to name (:tag <name>)
+4. ctrl+t -> jump back
+5. :ts - list all given name tags (:ts <name>)
+6. :grep  
+7. :copen
+8. :close
+9. shift+5 jump between braces, brackets, #ifdef-#else
+
+
