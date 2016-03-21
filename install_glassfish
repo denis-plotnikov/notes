@@ -1,0 +1,31 @@
+How to install glassfish4 example on Centos 7.2: 
+----------------------------------------------------------------------------------------------------
+1. Install java: yum install java-1.8.0-openjdk*
+2. Install glassfish:
+	a. cd /usr/share
+	b. mkdir glassfish4
+	c. cd glassfish4
+	d. download glassfish4: wget http://download.java.net/glassfish/4.0/release/glassfish-4.0.zip
+	e. unzip glassfish-4.0.zip
+	f. cd /usr/share/glassfish4/glassfish4/bin
+	g. Start glassfish: ./asadmin start-domain
+	h. Verify the glassfish works: curl http://localhost:8080/
+	i. Change glassfish admin password (to 1q2w3e): ./asadmin change-admin-password
+	j. Enable glassfish admin panel: ./asadmin enable-secure-admin
+	k. Restart glassfish: ./asadmin stop-domain, then ./asadmin start-domain
+3. Install the sample Hello.war application following the instructions here: https://docs.oracle.com/cd/E19575-01/821-0186/geyvr/index.html
+	a. wget https://glassfish.dev.java.net/downloads/quickstart/hello.war
+	b. cp hello.war /usr/share/glassfish4/glassfish4/glassfish/domains/domain1/autodeploy/
+	c. restart glassfish: /usr/share/glassfish4/glassfish4/glassfish/bin/asadmin restart-domain
+
+(some instructions are here http://javasource.ru:5050/articles.xhtml?artlink=install-glassfish4-centos6 in Russian)
+
+
+How to install Java mysql/mariadb adapter: 
+----------------------------------------------------------------------------------------------------
+1. Get the adapter/connector/driver: wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.zip 
+2. unzip it
+3. put the unziped jar file into /usr/share/glassfish4/glassfish4/glassfish/lib:
+	cp mysql-connector-java-5.1.38-bin.jar /usr/share/glassfish4/glassfish4/glassfish/lib/
+4. restart glassfish: ./asadmin restart-domain
+5. Now you can use it via glassfish's admin panel: https://localhost:4848/ username: admin, password: 1q2w3e (if you've done step 2[i])
