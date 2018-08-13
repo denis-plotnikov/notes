@@ -1,0 +1,23 @@
+To make sure your host is visible for the testing framework do the following
+sequence found in the documentation at 
+http://home.parallels.com/wiki/Atomic%20tests-%20Technical%20Notes#Linux
+:
+	1. install openssh-server, add then (usualy installed by default)
+	2. cat id_rsa.pub >> /root/.ssh/authorized_keys
+		(i.e. put the key found at 
+		 http://perf.sw.ru/distrib/WinSSHD.v4.19/ClientTools/id_rsa.pub
+		 to /root/.ssh/authorized_keys of the server being tuned 
+		 make sure /root/.ssh/authorized_key has 600 privileges
+		 (i.e chmod 600 /root/.ssh/authorized_keys) 
+		)
+	3. edit /etc/ssh/sshd_config and set
+		---------------------------------------------
+		RSAAuthentication yes
+		PubkeyAuthentication yes
+		AuthorizedKeysFile      .ssh/authorized_keys
+ 		---------------------------------------------
+	4. restart the openssh-server to make sure it knows about the changes 
+	   made
+		(i.e. /etc/init/sshd restart)
+
+Everything should be ok now

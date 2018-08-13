@@ -1,0 +1,30 @@
+1. made oon top of 2 tests:
+	* YCSB - Yahoo! Cloud Serving Benchmark using Cassandra
+	* KMeans using hadoop
+2. use cloud managing software from the list:
+	*Amazon EC2
+	*Digital Ocean
+	*Google Compute Engine
+	*OpenStack (Juno)
+	*Rackspace
+	*IBM SoftLayer
+
+3. Use CBTOOL
+	Cloud Rapid Experimentation and Analysis Tool (aka CBTOOL) which is a framework that
+	automates IaaS cloud benchmarking through the running of controlled experiments
+4. OS: Unix complained
+5. 3 physical nodes(servers) min
+
+Scalability
+---------------
+measures the total amount of work performed by application instances running in a cloud. The aggregate work performed by one or more application instances should linearly scale in an ideal cloud. Scalability is reported for the number of compliant application instances (AIs) completed and is an aggregate of workloads metrics for those AIs normalized against a set of reference metrics.
+
+Elasticity
+---------------
+measures whether the work performed by application instances scales linearly in a cloud when compared to the performance of application instances during baseline phase. Elasticity is expressed as a percentage.
+
+Mean Instance Provisioning Time
+---------------
+measures the time interval between the instance provisioning request and connectivity to port 22 on the instance. This metric is an average across all instances in valid application instances.
+
+

@@ -1,0 +1,21 @@
+1. create a file vim /etc/systemd/system/<YOUR_SERVICE_NAME>.socket
+
+2. put the following lines into the file
+[Socket]
+ListenStream=0.0.0.0:13013 // address to listen to
+
+[Install]
+WantedBy=sockets.target
+
+3. create a file vim /etc/systemd/system/qemu-nbd.service
+
+4. put the following lines into the file
+[Service]
+ExecStart=<COMMAND_LINE_TO_START>
+
+#For example:
+#ExecStart=/vzt/denis/qemu/nbd_fd_systemd/qemu-nbd -e 4 -t /vzt/test_disk.qcow2
+#
+
+5. start the socket listener
+systemctl start qemu-nbd.socket

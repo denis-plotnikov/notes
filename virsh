@@ -1,0 +1,5 @@
+Execute a QMP (Qemu Management Interface) command
+----------------------------------------------------
+virsh qemu-agent-command win2012 '{"execute":"guest-fstrim"}';
+
+virsh qemu-monitor-command VM_d94e6dc2 --pretty '{ "execute": "human-monitor-command", "arguments": { "cpu-index":1,"command-line": "info registers" } }' >> regs.vals

@@ -1,0 +1,47 @@
+how do we treat nested data on migration:
+
+Situations:
+
+A. Sync of v cpu nested data, do it on QEMU migration only
+
+			QEMU	KVM
+vcpu->nested.vmxon	true	true  : someone already turned on nested vmx, do not allow do anything, return error
+			true	false : proper state, it's actually migration with nested vm -> load vcpu nested data from QEMU to kvm
+			false   true  : on vcpu nested vmx is turned on but this is unexpected for qemu, since on migration it expects a just-initialized vcpu
+			false	false :	don't need to do anything about nested cpu
+
+From KVM perspective it's reasonable to allow to turn on nested VMX only when the nested is currently off
+
+KVM:
+to enable nested vmx on vcpu it's needed:
+
+Preconditions:
+1. vcpu has been created already with vmx_create_vcpu
+2. the guest memory has been fully restored
+
+1. enter_vmx_operation(vcpu)
+2. if (enable_shadow_vmcs) set vcpu->nested.sync_shadow_vmcs = true;
+3. set MSRS:
+	MSR_IA32_VMX_BASIC
+	MSR_IA32_VMX_MISC
+	MSR_IA32_VMX_CR0_FIXED0
+	MSR_IA32_VMX_CR0_FIXED1
+	MSR_IA32_VMX_CR4_FIXED0
+	MSR_IA32_VMX_CR4_FIXED1
+	MSR_IA32_VMX_VMCS_ENUM
+	MSR_IA32_VMX_PROCBASED_CTLS2
+	MSR_IA32_VMX_EPT_VPID_CAP
+	MSR_IA32_VMX_TRUE_PINBASED_CTLS
+	MSR_IA32_VMX_TRUE_PROCBASED_CTLS
+	MSR_IA32_VMX_TRUE_EXIT_CTLS
+	MSR_IA32_VMX_TRUE_ENTRY_CTLS
+4. vmx_set_msr_bitmap(vcpu)
+5. load a saved nested state
+
+
+
+(handle_vmlaunch; handle_vmresume) -> nested_vmx_run -> enter_vmx_non_root_mode -> nested_get_vmcs12_pages
+
+
+
+

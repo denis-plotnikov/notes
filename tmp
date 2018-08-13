@@ -1,0 +1,36 @@
+V4:
+  * removed "is stable" function with vague definition of stability
+    there is the only function which does time with cycle stamp getting
+  * some variables renamed
+  * some patches split into smaller once
+  * atomic64_t usage is replaced with atomic_t
+ 
+V3:
+  Changing the timekeeper interface for clocksource reading looks like
+  an overkill to achive the goal of getting cycles stamp for KVM.
+  Instead extend the timekeeping interface and add functions which provide
+  necessary data: read clocksource with cycles stamp, check whether the
+  clock source is stable.
+
+  Use those functions and improve existing timekeeper functionality to
+  replace pvclock_gtod_copy scheme in masterclock data calculation.
+
+V2:
+  The main goal is to make L2 kvm-clock be stable when it's running over L1
+  with stable kvm-clock.
+
+  The patch series is for x86 architecture only. If the series is approved
+  I'll do changes for other architectures but I don't have an ability to
+  compile and check for every single on (help needed)
+
+  The patch series do the following:
+
+        * change timekeeper interface to get cycles stamp value from
+          the timekeeper
+        * get rid of pvclock copy in KVM by using the changed timekeeper
+          interface: get time and cycles right from the timekeeper
+        * make KVM recognize a stable kvm-clock as stable clocksource
+          and use the KVM masterclock in this case, which means making
+          L2 stable when running over stable L1 kvm-clock
+
+

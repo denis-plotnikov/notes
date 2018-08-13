@@ -1,0 +1,3 @@
+install symbols: vmlinux image
+-----------------------------------------------------------
+apt-get install linux-image-`uname -r`-dbg

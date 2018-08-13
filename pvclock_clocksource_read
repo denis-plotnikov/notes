@@ -1,0 +1,57 @@
+u64 pvclock_clocksource_read(struct pvclock_vcpu_time_info *src, u64 *tsc_stamp)
+{
+        unsigned version;
+        u64 ret;
+        u64 last;
+        u8 flags;
+        u64 tsc;
+        static bool stable_cached = false;
+
+        do {
+                version = pvclock_read_begin(src);
+                tsc = rdtsc_ordered();
+                if (tsc_stamp)
+                        *tsc_stamp = tsc;
+                ret = __pvclock_read_cycles(src, tsc);
+                flags = src->flags;
+        } while (pvclock_read_retry(src, version));
+
+        if (unlikely((flags & PVCLOCK_GUEST_STOPPED) != 0)) {
+                src->flags &= ~PVCLOCK_GUEST_STOPPED;
+                pvclock_touch_watchdogs();
+        }
+
+        if (likely(valid_flags & PVCLOCK_TSC_STABLE_BIT)) {
+                // u64 cs_stable_now = !!(flags & PVCLOCK_TSC_STABLE_BIT);
+                // u64 st = cs_stable_now;
+                // if (unlikely(cs_stable_now != atomic64_xchg(&cs_stable, cs_stable_now))) {
+                //      printk("Clocksource changed: now: %llu flags: %u now copy: %llu", cs_stable_now, flags, st);
+                //      clocksource_changes_notify();
+                //}
+                //
+                bool stable_now = !!(flags & PVCLOCK_TSC_STABLE_BIT);
+                if (stable_cached != stable_now) {
+                        printk("Clocksource changed: now: %u was: %u flags: %u", stable_now, stable_cached, flags);
+                        stable_cached = stable_now;
+                        clocksource_changes_notify();
+                }
+                if (stable_now)
+                        return ret;
+        }
+
+
+/* this works as good as hell
+        if (likely(valid_flags & PVCLOCK_TSC_STABLE_BIT)) {
+                bool stable_now = !!(flags & PVCLOCK_TSC_STABLE_BIT);
+                long stable_last = atomic64_read(&cs_stable);
+                if (stable_now != stable_last) {
+                        printk("Clocksource changed: now: %u was: %ld flags: %u", stable_now, stable_last, flags);
+                        if (stable_last == atomic64_cmpxchg(&cs_stable, stable_last, stable_now)) {
+                                printk("Send notifier");
+                                clocksource_changes_notify();
+                        }
+                }
+                if (stable_now)
+                        return ret;
+        }
+*/

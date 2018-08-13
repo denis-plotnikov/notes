@@ -1,0 +1,18 @@
+The  manual is here: https://www.kernel.org/doc/html/latest/admin-guide/dynamic-debug-howto.html
+
+to turn of dynamic debug
+
+1. mount debugfs
+mount -t debugfs nodev /sys/kernel/debug
+
+2. turn on dynamic debug in a file
+echo "file smpboot.c +p" > /sys/debug/dynamic_debug/control
+or
+echo "file drivers/usb/* +p" > /sys/debug/dynamic_debug/control
+... more options in debug
+
+3. to turn on on boot add to grub.cfg parameter
+dyndbg="file smpboot.c +pf ; file apic.c +pf" 
+p - print
+f - add function name
+

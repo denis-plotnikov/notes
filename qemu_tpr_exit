@@ -1,0 +1,35 @@
+This commit f6e90f9e0ee3df5010e7f378e669d6838b9a25bf force using x2apic even if apicv is not initialized by changing this piece of code:
+
+@@ -8439,12 +8500,7 @@ static void vmx_set_virtual_x2apic_mode(struct kvm_vcpu *vcpu, bool set)
+                return;
+        }
+ 
+-       /*
+-        * There is not point to enable virtualize x2apic without enable
+-        * apicv
+-        */
+-       if (!cpu_has_vmx_virtualize_x2apic_mode() ||
+-                               !kvm_vcpu_apicv_active(vcpu))
++       if (!cpu_has_vmx_virtualize_x2apic_mode())
+                return;
+ 
+        if (!cpu_need_tpr_shadow(vcpu))
+
+Our vzkernel 32.1 doesn't have this commit applied yet. That's the reason why an L2 guest
+running on our kernel performs exits to qemu but while running linux 4.11 - doesn't: our kernel uses
+vmx_msr_bitmap_longmode which force L1 to process TPR MSR accsess while linux 4.11 uses vmx_msr_bitmap_longmode_x2apic
+which processes TPR MSR write in L0 and because of that L1 qemu doesn't see tpr access writings.
+
+This has consequences for qemu in L1 when running on linux 4.11: it updates env->system_time_msr with actual value
+much later then it's written and thinks that system_time_msr isn't set for a long time posibly causing problems on time updates while
+pause/resume. There is no such behavior on vz7.32.1 - it has a chance to see system_time_msr correct value very soon after the
+msr is set.
+This is because linux guests do the following on CPU initialization
+1. initialize clocksource with kvm_clock inducing setting of system_time_msr by kvm
+2. initialize apic setting TPR to zero and never change it later on. This induce for L1:
+	* L1: linux 4.11 - nothing as TPR asscess is proccesed by L0, system_time_msr will stay 0 until something else happens much later
+	* L1: vz7.32.1   - exit to qemu L1 and updating system_time_msr properly
+
+---
+
+

@@ -1,0 +1,18 @@
+# before using ipmi serial-over-lan make sure you have the console
+# redirected to a serial port ipmi listening to 
+# in order to do that check line console=tty0 console=ttyS2,115200n8 exists in /boot/grub2/grub.cfg
+# here ttyS2 corresponds to COM3: ttyS[X] = COM[Y] where X = Y - 1
+# the ttyS[X] have to be properly set to a value that ipmi uses
+# you can find this value in BIOS in ipmi settings
+
+for i in ipmi_msghandler ipmi_si ipmi_devintf ; do modprobe $i; done 			# adds kernel modules for ipmitool working
+ipmitool sol 										# tune ipmi serial-over-lan mode
+ipmitool -I lanplus -H <your_host_name_or_address> -U ADMIN -P ADMIN sol activate 	# connect to a host via impi serial-over-lan
+virt-viewer -c p15 atomics_win2012_x64_r2sp1						# connect to VM on remote host
+don't forget to send an ssh key to remote computer to ease the connection for virt-viewer
+
+Some used commands:
+ipmitool -I lanplus -H 10.161.0.48 -U admin -P admin sol activate 		// start ipmi serial-over-lan session
+ipmitool -I lanplus -H 10.161.0.48 -U admin -P admin chassis power reset	// restart a computer over ipmi
+
+

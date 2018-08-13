@@ -1,0 +1,7 @@
+a command to convert elf-file to windbg file:
+-----------------------------------------------------------------
+rekall -f <input_elf_file_name> raw2dmp <output_windbg_file_name>
+
+rekall -f dump.elf raw2dmp dump5_wdbg.dmp
+
+

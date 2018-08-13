@@ -1,0 +1,2 @@
+1. Set capability MIGRATION_CAPABILITY_POSTCOPY_RAM: virsh qemu-monitor-command <VM_NAME> --hmp migrate_set_capability postcopy-ram on
+2. set migrate_start_postcopy

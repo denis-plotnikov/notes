@@ -1,0 +1,36 @@
+           migration_thread                       hmp_savevm                                
+--> postcopy_start    --> migration_completion    --> qemu_savevm_state             qmp_xen_save_devices_state <-- (not interested)
+       -->qemu_savevm_state_complete_precopy                                    qemu_save_device_state <--
+                                               --> vmstate_save <--
+                                                    --> vmstate_save_state:
+                                                           save each field from a given VMStateDescription
+                                                           to QEMUFile by calling field's put method
+                                                        -->  field->info->put(f, addr, size):
+								f: QEMUFile
+								addr: offset from base address
+								size: size of the field
+
+
+WHERE savevm_state.handlers IS SET
+
+instance_init
+--> device_initfn
+    --> device_set_realized
+        --> vmstate_register_with_alias_id:
+                insert a handler to savevm_state.handlers
+
+VMStateDescription - a struct for storing device's state
+
+VMStateDescription
+	...
+	VMStateField
+            | ...
+            | VMStateInfo
+            |     | ...
+            |     | VMStateInfo
+            |     |    | name
+            |     |    | (*get)
+            |     |    | (*put)
+            |     | ...
+            | ...
+	...

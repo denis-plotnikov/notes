@@ -1,0 +1,1 @@
+xfreerdp --sec tls -d afic -u virtuozzo -p V1rtu0zz0 95.129.24.19:33900 +clipboard --smart-sizing --size:50% --drive:home,$PWD

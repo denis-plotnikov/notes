@@ -1,0 +1,39 @@
+1. Make a worktree
+
+git worktree add -b <new_branch_name> <work_tree_path> <branch_to_make_worktree_from>
+
+Example:
+git worktree add -b tsc_reset_fix_main /vzt/denis/kernel/tsc_reset_fix_main kvm_main/queue
+--------------------------------------------------------------------------------------------
+
+2. Send email with cover letter and subject prefix
+
+git send-email --to=rkagan@virtuozzo.com --to=den@virtuozzo.com --cc=svt-core@lists.sw.ru -2 --subject-prefix="patch v2" -s --cover-letter --annotate
+
+git send-email --to=rkagan@virtuozzo.com --to=den@virtuozzo.com --cc=svt-core@lists.sw.ru -2 --subject-prefix="PATCH v1" -s
+
+$ git format-patch --cover-letter -M origin/master -o outgoing/
+$ edit outgoing/0000-*
+$ git send-email outgoing/*
+--------------------------------------------------------------------------------------------
+
+3. What is tracked in the branch
+
+git ls-tree -r <branch_name_here> --name-only
+--------------------------------------------------------------------------------------------
+
+4. Delete a worktree
+
+rm -rf <work_tree_directory>
+git worktree prune
+--------------------------------------------------------------------------------------------
+
+5. List all the worktrees
+
+git worktree list
+
+6. Compare two branches
+
+git diff branch_1..branch_2
+--------------------------------------------------------------------------------------------
+

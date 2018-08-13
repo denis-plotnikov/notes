@@ -1,0 +1,7 @@
+watch all process with threads stat
+-------------------------------------------------------------------------------
+ps -e -To pid,tid,tgid,tty,time,pcpu,size,[comm|args]
+
+unpack rpm file
+-------------------------------------------------------------------------------
+rpm2cpio qemu-kvm-vz-2.6.0-28.3.10.vz7.75.3.x86_64.rpm | cpio -idmv

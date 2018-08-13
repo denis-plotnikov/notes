@@ -1,0 +1,37 @@
+1. Install SystemTap
+	a. Install -devel, -debuginfo and -debuginfo-common-arch packages for the kernel
+	   for example the necessary packages for one of our kernels can be found here:
+		http://kojistorage.eng.sw.ru/packages/vzkernel/3.10.0/327.28.2.vz7.17.9/x86_64/
+	b. Install systemtap packages:
+		yum install systemtap systemtap-runtime
+        c. Test the systemtap:
+		stap -v -e 'probe vfs.read {printf("read performed\n"); exit()}'
+           In case of successful installation there is a "read performed" line in the command output
+2. start systemtap
+	stap <:system_tap_script_file>
+
+	the system tap script file example:
+
+probe kernel.trace("kvm_inj_virq")
+{
+                  //printf ("%s -> %s\n", thread_indent(1), probefunc())
+                  //printf ("%s\n", probefunc())
+                  printf ("********************************************\n")
+                  print_backtrace()
+}
+
+//probe module("kvm").function("kvm_set_irq")
+//{
+//                printf ("%s -> %s\n", thread_indent(1), probefunc())
+//}
+
+//probe module("kvm").function("kvm_set_irq").callee("*")
+//{
+//                printf ("%s -> %s\n", thread_indent(1), probefunc())
+//}
+
+//probe module("kvm").function("kvm_set_irq").return
+//{
+//                printf ("%s <- %s\n", thread_indent(-1), probefunc())
+//}
+

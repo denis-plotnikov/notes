@@ -1,0 +1,57 @@
+Start VM directly with netdevice configured manually 
+--------------------------------------------------------------------------------------------------
+1. create a tap device:
+
+ip tuntap add tap1 mode tap
+ip link set tap1 address fe:1c:42:63:78:50
+ip link set tap1 master br0
+ip link set tap1 up
+
+2. start a VM:
+
+/usr/libexec/qemu-kvm-2.9 \
+ -name guest=perf-drupal-101,debug-threads=on \
+ -machine pc-i440fx-vz7.4.0,accel=kvm,usb=off,dump-guest-core=off \
+ -cpu SandyBridge,vme=on,ss=on,pcid=on,hypervisor=on,arat=off,tsc_adjust=on,xsaveopt=on,pdpe1gb=on,ds=on,acpi=on,ht=on,tm=on,pbe=on,dtes64=on,monitor=on,ds_cpl=on,smx=on,est=on,tm2=on,xtpr=on,pdcm=on,dca=on,osxsave=on,vmx=off,+kvmclock \
+ -m 2048 \
+ -realtime mlock=off \
+ -smp 2,sockets=1,cores=2,threads=1 \
+ -uuid 28417066-a282-43c7-9bd9-6279059d6a26 \
+ -no-user-config \
+ -nodefaults \
+ -chardev stdio,id=charmonitor \
+ -mon chardev=charmonitor,id=monitor,mode=readline \
+ -rtc base=2017-11-09T09:09:49 \
+ -global kvm-pit.lost_tick_policy=discard \
+ -boot strict=on \
+ -device nec-usb-xhci,id=usb,bus=pci.0,addr=0x6 \
+ -device virtio-scsi-pci,id=scsi0,bus=pci.0,addr=0x5 \
+ -device virtio-serial-pci,id=virtio-serial0,bus=pci.0,addr=0x7 \
+ -drive file=/vz/vmprivate/28417066-a282-43c7-9bd9-6279059d6a26/harddisk.hdd,format=qcow2,if=none,id=drive-scsi0-0-0-0,serial=4f1721bd927c40ac9135,cache=none,discard=unmap,aio=native \
+ -device scsi-hd,bus=scsi0.0,channel=0,scsi-id=0,lun=0,drive=drive-scsi0-0-0-0,id=scsi0-0-0-0,bootindex=1,product="Vz HARDDISK0" \
+ -drive file=/vzt/at_ext_v1.6.iso,format=raw,if=none,id=drive-scsi0-0-1-0,readonly=on,cache=none,discard=unmap,aio=native \
+ -device scsi-cd,bus=scsi0.0,channel=0,scsi-id=1,lun=0,drive=drive-scsi0-0-1-0,id=scsi0-0-1-0,bootindex=2,product="Vz CD-ROM1" \
+ -netdev tap,ifname=tap1,id=hostnet0,vhost=on,script=no,downscript=no \
+ -device virtio-net-pci,netdev=hostnet0,id=net0,mac=00:1c:42:63:78:50,bus=pci.0,addr=0x3,bootindex=3 \
+ -netdev tap,ifname=tap2,id=hostnet1,vhost=on,script=no,downscript=no \
+ -device virtio-net-pci,netdev=hostnet1,id=net1,mac=00:1c:42:42:6c:5e,bus=pci.0,addr=0x4,bootindex=4 \
+ -chardev file,id=charserial0,path=/vz/vmprivate/28417066-a282-43c7-9bd9-6279059d6a26/serial.txt,append=on \
+ -device isa-serial,chardev=charserial0,id=serial0 \
+ -device usb-tablet,id=input0,bus=usb.0,port=1 \
+ -vnc 0.0.0.0:5900,websocket=5700 \
+ -device VGA,id=video0,vgamem_mb=32,bus=pci.0,addr=0x2 \
+ -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x8,deflate-on-oom=on \
+ -d guest_errors,unimp \
+ -device pvpanic,ioport=1285 \
+ -msg timestamp=on
+
+3. start a vm with a monitor enabled
+qemu-kvm -drive if=none,id=drive0,file=/tmp/qtest.mxGjNT,format=raw -drive if=none,id=drive1,file=null-co://,format=raw -device virtio-blk-pci,id=drv0,drive=drive0,addr=4.0 -chardev stdio,id=charmonitor -mon chardev=charmonitor,mode=readline
+
+3. hotplugable pci on q35
+x86_64-softmmu/qemu-system-x86_64 -drive if=none,id=drive0,file=/tmp/qtest.mxGjNT,format=raw -drive if=none,id=drive1,file=null-co://,format=raw -device virtio-blk-pci,id=drv0,drive=drive0,addr=4.0 -chardev stdio,id=charmonitor -mon chardev=charmonitor,mode=readline[control - for json qemu monitor commands] -device pcie-root-port,id=pcie.9
+
+
+
+
+

@@ -1,0 +1,24 @@
+performance
+--------------------------
+use the highest possible clock frequency
+
+
+ondemand
+--------------------------
+It dynamically switches from between maximum and minimu cpu frequency depending on the current system load.
+It does so at the expense of latency between frequency switching so, latency can compensate any performance versus power saving benefits if the system switches between idle and heavy workloads too often.
+
+conservative
+--------------------------
+Like the Ondemand governor, but switches between frequencies more gradually.
+
+
+powersave
+--------------------------
+forces the CPU to use the lowest possible clock frequency
+The term powersave can sometimes be deceiving, though, since (in principle) a slow CPU on full load consumes more power than a fast CPU that is not loaded
+
+
+userspace
+--------------------------
+allows userspace programs (or any process running as root) to set the frequency. Of all the governors, Userspace is the most customizable; and depending on how it is configured, it can offer the best balance between performance and consumption for your system.

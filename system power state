@@ -1,0 +1,14 @@
+The states are supported by ACPI?
+
+Working state:
+S0
+
+System Sleeping States:
+S1: Processors' and buses' clocks are stopped
+S2: Processors are off. The processors states are lost
+S3: Only system memory is preserved. 
+S4: The hibernate. The system resumes from loading a hibernate file
+
+Shutdown state:
+S5: Nothing of recent system state is saved. The system need a boot to
+    continue.

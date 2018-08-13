@@ -1,0 +1,29 @@
+Instruction for debugee turning is here:
+https://rnd-teamwork.sw.ru/display/SVT/How+to+debug+windows+guests+in+PCS
+
+on debugee machine run:
+
+bcdedit /debug on
+bcdedit /dbgsettings serial debugport:n baudrate:rate
+
+When everything is done and WinDBG "is waiting for reconnection" click Debug->Break from the menu.
+This should put a break and populate the WinDBG window with information about the debugee
+
+Commands:
+more commands here: http://windbg.info/doc/1-common-cmds.html#14_tracing [long]
+	and here: https://briolidz.wordpress.com/2013/11/17/windbg-some-debugging-commands/ [short]
+k - print the stack
+uf - disassemble function
+r - print registers
+x - displays symbols that match the specified pattern (helps find a function address)
+with data type
+d[d|q - data types] - show memory content
+.reload - reload symbols -- .reload /f winhv.sys - load symbols related to hyper-v
+~1s - get 1st thread info
+
+!running - get list of runnung processes
+process 0 6 - get all list of all processes
+dqs - show data in memory with symbols
+!thread <current> - get <current> thread data
+!ptr <virtual_address> - page table entry info - which virtual address to which phisical address is mapped
+k = <stack_pionter_address> - print the stack

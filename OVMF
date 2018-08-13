@@ -1,0 +1,12 @@
+
+Some facet about OVMF (Open Virtual Machine Firmware):
+
+OVMF has:
+------------------------------------------------------------
+* variable section and code section
+* dirver stack supporting virtio-blk devices
+
+OVMF can:
+------------------------------------------------------------
+* recognize the bootorder specification (bootorder clause in qemu command line)
+* supend to/resume from RAM (S3)

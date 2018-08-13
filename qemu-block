@@ -1,0 +1,12 @@
+There is a struct describing a Block Driver which has name BlockDriver
+In the structure there are a number of function pointers that has to be filled
+with different layers.
+
+So far, I find out that there are format layer and protocol layer
+
+Format layer defines in which format the data is stored, e.g qcow2 and others
+Protocol layer defines which backend is used for actual data storage, e.g HDD, NBD, etc.
+
+
+
+

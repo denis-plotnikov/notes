@@ -1,0 +1,4 @@
+
+ls /sys/module/kvm/parameters/
+ls /sys/kernel/debug/tracing/events/kvm/
+ls /sys/kernel/debug/kvm/

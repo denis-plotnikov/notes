@@ -1,0 +1,5 @@
+x86 instructions
+-------------------------------------------------------------------------------
+
+test - do binary and with two operands (sets SF, ZF, PF)
+movezbl - take value as byte, move to destination extending with zeros to long (32-bit)

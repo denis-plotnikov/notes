@@ -1,0 +1,8 @@
+how to get vmx structure from vcpu
+-------------------------------------------------------------------------------
+set $vmx0 = (struct vcpu_vmx*) $vcpu0
+
+how to get vmcs12
+-------------------------------------------------------------------------------
+set $vmcs12_0 = $vmx0->nested.current_vmcs1
+

@@ -1,0 +1,31 @@
+1. curl http://autoinstall.plesk.com/plesk-installer > plesk-installer && chmod 777 plesk-installer
+2. ./plesk-installer --select-release-id PLESK_12_5_30  --target /tmp/panel --install-everything --enable-xml-output
+3. /usr/local/psa/bin/init_conf --init -passwd 1q2w3e -email dplotnikov@virtuozzo.com
+4. install a key: http://download1.parallels.com/Plesk/Doc/en-US/online/plesk-installation-upgrade-migration-guide/
+5. /usr/local/psa/bin/ipmanage --auto-remap-ip-addresses true
+
+More details here: http://download1.parallels.com/Plesk/Doc/en-US/online/plesk-installation-upgrade-migration-guide/
+user --create mary@example.com -owner JDoe -passwd sample -cname Mary -role webmaster
+
+6. /usr/local/psa/bin/domain --list | wc -l - get number of licenses left
+7. /usr/local/psa/bin - path to CLI stuff
+
+./license -i AX2T00-0T6W13-87G737-KFS614-1XS551
+
+#!/bin/bash
+set -x
+LICENSE=$1
+IP=$2
+DST_DIR=/tmp/plesk
+BIN_DIR=/usr/local/psa/bin
+cd $DST_DIR
+curl http://autoinstall.plesk.com/plesk-installer > plesk-installer && chmod 777 plesk-installer
+./plesk-installer --select-release-id PLESK_12_5_30  --target /tmp/panel --install-everything
+$BIN_DIR/init_conf --init -passwd 1q2w3e -email dplotnikov@virtuozzo.com -license_agreed true -company Virtuozzo -name "Denis Plotnikov" -send_tech_announce false -admin_info_not_required true
+$BIN_DIR/license -i $LICENSE
+$BIN_DIR/ipmanage --auto-remap-ip-addresses true
+$BIN_DIR/domain --create localhost.localdomain -www true -hosting true -ip $IP -login test -passwd 1q2w3e -php-handler-id plesk-php56-fpm
+
+
+
+

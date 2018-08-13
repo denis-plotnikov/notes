@@ -1,0 +1,49 @@
+cd /sys/kernel/debug/tracing/
+echo 1 > events/kprobes/enable
+
+At the very begining path events/kprobes/enable path doesn't exists.
+It appears after the first adding of an event to /sys/kernel/debug/tracing/kprobe_events
+
+:> trace && cat trace_pipe  (or cat trace_pipe)
+
+
+how to set trace events
+----------------------------------------------------------------------------------------
+echo 'r kvm_vcpu_check_block ret=$retval:s32' >> /sys/kernel/debug/tracing/kprobe_events
+
+
+examples of the events set (p: - on entry r: - on return)
+----------------------------------------------------------------------------------------
+p:kprobes/p_kvm_inject_nmi_0 kvm_inject_nmi vcpu=%di:u64
+r:kprobes/r_kvm_arch_vcpu_runnable_0 kvm_arch_vcpu_runnable ret=$retval:s32
+p:kprobes/p_kvm_inject_nmi_22 kvm_inject_nmi+22 vcpu=%di:u64 nmi_queued=+0x21c0(%di):s32 nmi_pending=+0x21c4(%di):u32
+p:kprobes/p_kvm_arch_vcpu_runnable_0 kvm_arch_vcpu_runnable vcpu=%di:u64 nmi_queued=+0x21c0(%di):s32 nmi_pending=+0x21c4(%di):u32
+r:kprobes/r_process_nmi_0 process_nmi
+p:kprobes/p_kvm_arch_vcpu_ioctl_0 kvm_arch_vcpu_ioctl ioctl=%si:u32
+p:kprobes/p_process_nmi_0 process_nmi vcpu=%di:u64 nmi_queued=+0x21c0(%di):s32 nmi_pending=+0x21c4(%di):u32 irqchip_split=+0x2ed8(+0(%di)):u8
+r:kprobes/r_kvm_cpu_has_pending_timer_0 kvm_cpu_has_pending_timer ret=$retval:s32
+r:kprobes/r_kvm_vcpu_block_0 kvm_vcpu_block
+r:kprobes/r_kvm_vcpu_check_block_0 kvm_vcpu_check_block ret=$retval:s32
+p:kprobes/p_kvm_apic_accept_events_0 kvm_apic_accept_events vcpu=%di:u64
+p:kprobes/p_kvm_arch_vcpu_ioctl_run_0 kvm_arch_vcpu_ioctl_run vcpu=%di:u64
+r:kprobes/r_kvm_arch_vcpu_ioctl_0 kvm_arch_vcpu_ioctl ret=$retval:s64
+r:kprobes/r_kvm_arch_vcpu_ioctl_run_0 kvm_arch_vcpu_ioctl_run ret=$retval:s32
+p:kprobes/p_kvm_vcpu_ioctl_0 kvm_vcpu_ioctl ioctl=%si:u32
+r:kprobes/r_kvm_vcpu_ioctl_0 kvm_vcpu_ioctl ret=$retval:u64
+
+p:kprobes/p_vcpu_enter_guest_0 vcpu_enter_guest vcpu=%di:u64 tsc_timestamp=+0x1fd0(%di):u64
++0x1fd0 - tsc_timestamp
++0x1fd8 - system_time
++0x1fe0 - last_read_tsc
+
+echo 'common_pid != 10696' > events/kvm/filter
+cat events/kvm/kvm_msr/format
+
+p:kprobes/p_pvclock_clocksource_read_0 pvclock_clocksource_read pvclock_vcpu_time_info=%di:u64
+r:kprobes/r_pvclock_clocksource_read_0 pvclock_clocksource_read ret=$retval:u64
+
+short manual
+----------------------------------------------------------------------------------------
+https://www.kernel.org/doc/Documentation/trace/kprobetrace.txt
+
+

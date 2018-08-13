@@ -1,0 +1,27 @@
+get cpu's state
+------------------------------------------------------
+virsh qemu-monitor-command VM_93d73cfa --hmp info cpus
+
+get VM settings
+------------------------------------------------------
+virsh qemu-monitor-command VM_93d73cfa --hmp info qtree
+
+start gdb server and connect to it
+------------------------------------------------------
+virsh qemu-monitor-command <vm_name> --hmp gdbserver tcp::<port_number>
+
+then to connect to gdb server do:
+gdb
+(gdb) set architecture i386:x86-64 [this is needed for proper answer parsing by gdb]
+(gdb) target remote 0.0.0.0.:<port_number>
+
+list to serial output all supported sysRQs
+------------------------------------------------------
+virsh send-key debian-7-x86_64_thiJ6 KEY_LEFTALT KEY_SYSRQ KEY_H
+
+
+read phisical memory: /128ih  /(number)(format)(size) http://software.viamep.com/qemu-doc.html
+------------------------------------------------------
+read 128 instructions 16 bit  
+virsh qemu-monitor-command VM_3440fe0f --hmp xp /128ih 0x9a000
+

@@ -1,0 +1,10 @@
+To debug a kernel install and run the command
+---------------------------------------------------
+crash
+
+issue the following commands to load the modules
+---------------------------------------------------
+crash> mod -s kvm
+crash> mod -s kvm_intel
+crash> set gdb on
+

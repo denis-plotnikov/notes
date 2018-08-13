@@ -1,0 +1,46 @@
+Computer hardware
+-----------
+
+ELF    - Executable and Linkable Format https://ru.wikipedia.org/wiki/Executable_and_Linkable_Format
+EFI    - Extensible Firmware Iterface
+PMU    - Performance Monitor Unit
+PML    - Page Modification Logging
+PKRU   - pkeys -- memory protection keys Memory Protection Keys provide a mechanism for changing
+         protections without requiring modification of the page tables on
+         every permission change http://man7.org/linux/man-pages/man7/pkeys.7.html
+SMM    - System Management Mode https://www.google.ru/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=SMM+intel
+MCE    - Machine Check Exception
+PAE    - Phisical Address Extension
+NX     - (bit) no execute bit (related to PAE)
+TSS    - Task State Segment
+ACPI   - Advanced Configuration and Power Interface
+FADT   - fixed ACPI description table
+VMX    - Virtual Machine eXtension
+NAS    - Network-Attached Storage
+SR_IOV - Single-root Input Output Virtualization
+VFIO   - Virtual Vunction Input Output
+IBPB   - Indirect Branch Prediction Barrier (Spectre)
+OVMF   - Open Virtual Machine Firmware
+UEFI   - Unified Extensible Firmware Interface
+
+interrupts
+-----------
+IRQ  - an interrupt
+NMI  - non-maskable interrupt (arising anyway, even if interrupt are tured off on cpu)
+SMI  - system management interrupt, chipset send SMI to CPU to switch CPU to System Management Mode (SMM)
+SCI  - system control interrupt, an interrupt fired by ACPI
+GSI  - global system interrupt - IRQ0 (still not sure that it's true, concluded from here http://wiki.osdev.org/IOAPIC)
+
+MCE  - Machine Check Exception
+PMI  - Performance Monitoring Interrupt
+
+IT
+-----------
+SAN  - Storage Area Network
+LUN  - Logical Unit Number
+S3   - Amazon Simple Storage Service
+S.M.A.R.T - HDD Self-Monitoring, Analysis and Reporting Technology
+
+Business
+-----------
+EMEA - Europe, the Middle East and Africa
